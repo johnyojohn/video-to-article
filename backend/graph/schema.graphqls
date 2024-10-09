@@ -1,0 +1,26 @@
+type Video {
+  id: ID!
+  title: String!
+  url: String!
+}
+
+type Article {
+  id: ID!
+  videoId: ID!
+  content: String!
+  tableOfContents: [TableOfContentsItem!]!
+}
+
+type TableOfContentsItem {
+  title: String!
+  timestamp: Float!
+}
+
+type Query {
+  video(id: ID!): Video
+  article(id: ID!): Article
+}
+
+type Mutation {
+  createArticleFromVideo(videoUrl: String!): Article!
+}
