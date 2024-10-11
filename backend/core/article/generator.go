@@ -16,6 +16,8 @@ import (
 )
 
 //TODO: CACHE THE TRANSCRIPTION AND MAIN ARTICLE AND THE VIDEO STUFF
+//TODO: This is awful code and needs to be refactored
+//TODO: Maybe check out that LLM testing pipeline thing and also Dspy
 
 func GenerateArticle(videoURL string) (*model.Article, error) {
 	transcription, err := GenerateTranscriptionWithTimestamps(videoURL)
@@ -87,6 +89,7 @@ func GenerateArticleMain(transcription string) (string, error) {
 
 	fmt.Println(transcription)
 
+	//TODO: this is kinda hacky; can do better with constrained grammars
 	res, err := model.GenerateContent(ctx, genai.Text(fmt.Sprintf(`
 Another LLM model was given an educational video and was asked to generate the
 timestamp, transcription, and detailed visual descriptions for each second of the video

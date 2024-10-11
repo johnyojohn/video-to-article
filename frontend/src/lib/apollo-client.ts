@@ -1,5 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
+// TODO: this sucks for some reason can't handle big loads
+
 const httpLink = createHttpLink({
   uri: "http://localhost:8080/query",
 });

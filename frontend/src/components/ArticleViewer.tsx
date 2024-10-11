@@ -43,7 +43,7 @@ const ArticleViewer: React.FC<ArticleViewerProps> = ({ articleData }) => {
           console.log(imageUrl);
           
           const aspectRatio = parseInt(height) / parseInt(width);
-          const imageTag = `<img src="${imageUrl}" style="width: 56rem; height: auto; aspect-ratio: ${1/aspectRatio};" alt="Video frame at ${timestamp}" />`;
+          const imageTag = `<img src="${imageUrl}" style="width: 32rem; height: auto; aspect-ratio: ${1/aspectRatio};" alt="Video frame at ${timestamp}" />`;
           processedContent = processedContent.replace(fullMatch, imageTag);
         }
       }
@@ -72,7 +72,7 @@ const ArticleViewer: React.FC<ArticleViewerProps> = ({ articleData }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto pb-10">
       
       <video className="mb-10" src={videoUrl} controls />
       <ReactMarkdown rehypePlugins={[rehypeRaw]} className="markdown">{processedContent}</ReactMarkdown>

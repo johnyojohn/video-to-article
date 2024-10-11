@@ -15,3 +15,5 @@ type Query {
 type Mutation {
   createArticleFromVideo(videoUrl: String!): Article!
 }
+
+# TODO: Add a subscription later after implementing streaming

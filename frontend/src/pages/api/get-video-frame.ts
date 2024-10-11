@@ -72,6 +72,7 @@ async function generateVideoFrame(videoName: string, timestamp: string): Promise
   const tempDir = join(process.cwd(), 'temp');
   const tempVideoPath = join(tempDir, videoName);
   const tempFramePath = join(tempDir, `frame_${Date.now()}.jpg`);
+  // TODO: this is a truly awful hack that adds so much overhead
 
   try {
     // Ensure the temp directory exists

@@ -20,25 +20,23 @@ func main() {
 		port = defaultPort
 	}
 
-	database.InitDB()
+	//TODO: Distinguish development and production
+
+	database.InitDB() //TODO: Remove this later and use GC SQL
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	// Create a new CORS middleware
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:*"}, // Add your frontend URL here
 		AllowCredentials: true,
 		Debug:            true,
 	})
 
-	// Create a new ServeMux
 	mux := http.NewServeMux()
-
-	// Add routes to the ServeMux
 	mux.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	mux.Handle("/query", srv)
 
-	// Wrap the ServeMux with the CORS middleware
+	// Honestly don't know why this is how you do it
 	handler := c.Handler(mux)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)

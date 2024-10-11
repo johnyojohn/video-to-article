@@ -12,6 +12,9 @@ import (
 
 var db *sql.DB
 
+// TODO: Add a migration system later
+// Also, how tf do I use streaming with sqlite?
+
 func InitDB() {
 	var err error
 	db, err = sql.Open("sqlite3", "./video_articles.db")
