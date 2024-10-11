@@ -7,45 +7,34 @@ package graph
 import (
 	"context"
 	"fmt"
+	"video-to-article/backend/core/article"
+	"video-to-article/backend/core/database"
 	"video-to-article/backend/graph/model"
 )
 
 // CreateArticleFromVideo is the resolver for the createArticleFromVideo field.
 func (r *mutationResolver) CreateArticleFromVideo(ctx context.Context, videoURL string) (*model.Article, error) {
-	// TODO: Implement actual video processing and article generation
-	// This is a placeholder implementation
-	article := &model.Article{
-		ID:      "1",
-		VideoID: "1",
-		Content: fmt.Sprintf("This is a generated article from the video: %s", videoURL),
-		TableOfContents: []*model.TableOfContentsItem{
-			{Title: "Introduction", Timestamp: 0},
-			{Title: "Main Content", Timestamp: 60},
-			{Title: "Conclusion", Timestamp: 120},
-		},
+	generatedArticle, err := article.GenerateArticle(videoURL)
+	if err != nil {
+		return nil, err
 	}
-	return article, nil
-}
 
-// Video is the resolver for the video field.
-func (r *queryResolver) Video(ctx context.Context, id string) (*model.Video, error) {
-	// TODO: Implement video retrieval
-	return &model.Video{ID: id, Title: "Sample Video", URL: "https://example.com/video.mp4"}, nil
+	err = database.SaveArticle(generatedArticle)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("hi")
+
+	return convertToGraphQLArticle(generatedArticle), nil
 }
 
 // Article is the resolver for the article field.
 func (r *queryResolver) Article(ctx context.Context, id string) (*model.Article, error) {
-	// TODO: Implement article retrieval
-	return &model.Article{
-		ID:      id,
-		VideoID: "1",
-		Content: "Sample article content",
-		TableOfContents: []*model.TableOfContentsItem{
-			{Title: "Introduction", Timestamp: 0},
-			{Title: "Main Content", Timestamp: 60},
-			{Title: "Conclusion", Timestamp: 120},
-		},
-	}, nil
+	article, err := database.GetArticle(id)
+	if err != nil {
+		return nil, err
+	}
+	return convertToGraphQLArticle(article), nil
 }
 
 // Mutation returns MutationResolver implementation.

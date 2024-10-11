@@ -3,25 +3,14 @@
 package model
 
 type Article struct {
-	ID              string                 `json:"id"`
-	VideoID         string                 `json:"videoId"`
-	Content         string                 `json:"content"`
-	TableOfContents []*TableOfContentsItem `json:"tableOfContents"`
+	ID        string `json:"id"`
+	VideoName string `json:"videoName"`
+	Content   string `json:"content"`
+	Title     string `json:"title"`
 }
 
 type Mutation struct {
 }
 
 type Query struct {
-}
-
-type TableOfContentsItem struct {
-	Title     string  `json:"title"`
-	Timestamp float64 `json:"timestamp"`
-}
-
-type Video struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
-	URL   string `json:"url"`
 }

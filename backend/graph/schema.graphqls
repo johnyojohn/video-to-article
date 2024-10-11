@@ -1,23 +1,14 @@
-type Video {
-  id: ID!
-  title: String!
-  url: String!
-}
+
 
 type Article {
   id: ID!
-  videoId: ID!
+  videoName: String!
   content: String!
-  tableOfContents: [TableOfContentsItem!]!
+  title: String!
 }
 
-type TableOfContentsItem {
-  title: String!
-  timestamp: Float!
-}
 
 type Query {
-  video(id: ID!): Video
   article(id: ID!): Article
 }
 

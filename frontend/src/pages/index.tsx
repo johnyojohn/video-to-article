@@ -11,16 +11,15 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="w-full overflow-hidden">
       <Head>
         <title>Video to Article Converter</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="py-20">
-        <h1 className="text-4xl font-bold mb-8 text-center">
-          Video to Article Converter
-        </h1>
+      <h1 className="text-5xl font-bold py-10 mb-10 text-center bg-green-700 text-white">
+          TextualLearner
+      </h1>
+      <main className="">
         
         {!articleData ? (
           <VideoUploader onVideoUploaded={handleVideoUploaded} />

@@ -7,11 +7,9 @@ const CREATE_ARTICLE = gql`
   mutation CreateArticle($videoUrl: String!) {
     createArticleFromVideo(videoUrl: $videoUrl) {
       id
+      videoName
       content
-      tableOfContents {
-        title
-        timestamp
-      }
+      title
     }
   }
 `;
@@ -24,6 +22,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onVideoUploaded }) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setError] = useState<string | null>(null);
+  const [creatingArticle, setCreatingArticle] = useState(false);
   const uploadFile = useFileUpload();
   const getVideoUrl = useGetVideoUrl();
   const [createArticle, { loading, error }] = useMutation(CREATE_ARTICLE);
@@ -42,30 +41,35 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onVideoUploaded }) => {
       return;
     }
 
-    
     setError(null);
+    setUploading(true);
     const fileName = await uploadFile(file.name, file)
     console.log(fileName)
     if (fileName){
         const videoUrl = await getVideoUrl(fileName);
         console.log(videoUrl)
         if (videoUrl){
+            setUploading(false);
+            setCreatingArticle(true);
             try {
                 const { data } = await createArticle({ variables: { videoUrl } });
+                console.log(data)
+                console.log(data.createArticleFromVideo)
                 onVideoUploaded(data.createArticleFromVideo);
-              } catch (err) {
+            } catch (err) {
                 console.error("Error creating article:", err);
-              }
-        }else{
-            console.error("Getting video url failed:", uploadError);
+                setError("Failed to create article. Please try again.");
+            } finally {
+                setCreatingArticle(false);
+            }
+        } else {
+            setError("Failed to get video URL. Please try again.");
+            setUploading(false);
         }
-        setUploading(false);
-    }else{
-        console.error("Upload failed:", uploadError);
+    } else {
         setError("Upload failed. Please try again.");
+        setUploading(false);
     }
-   
-    
   };
 
   return (
@@ -91,15 +95,16 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onVideoUploaded }) => {
         {uploadError && <p className="text-red-500 text-sm">{uploadError}</p>}
         <button
           type="submit"
-          disabled={!file || uploading}
+          disabled={!file || uploading || creatingArticle}
           className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          {uploading ? 'Uploading...' : 'Convert to Article'}
+          {uploading ? 'Uploading...' : creatingArticle ? 'Creating Article...' : 'Convert to Article'}
         </button>
-        {uploading && (
+        {(uploading || creatingArticle) && (
           <div className="mt-2">
-            
-            <p className="text-sm text-gray-500 mt-1">Uploading</p>
+            <p className="text-sm text-gray-500 mt-1">
+              {uploading ? 'Uploading video...' : 'Creating article... This may take a minute.'}
+            </p>
           </div>
         )}
       </form>

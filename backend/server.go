@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"video-to-article/backend/core/database"
 	"video-to-article/backend/graph"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -18,6 +19,8 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
+
+	database.InitDB()
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
