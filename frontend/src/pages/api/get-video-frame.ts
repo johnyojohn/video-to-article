@@ -35,16 +35,31 @@ export default async function handler(
     const frameBuffer = await generateVideoFrame(videoName, timestamp);
     
     // Generate a unique filename for this frame
-    const frameFileName = `${videoName.replace('.mp4', '')}_frame_${timestamp.replace(':', '_')}.jpg`;
+    const frameFileName = `frames/${videoName.replace('.mp4', '')}_frame_${timestamp.replace(':', '_')}.jpg`;
     
-    // Save the frame locally
-    const framePath = join(process.cwd(), 'public', 'frames', frameFileName);
-    await fs.mkdir(join(process.cwd(), 'public', 'frames'), { recursive: true });
-    await fs.writeFile(framePath, frameBuffer);
+    // Upload the frame to Google Cloud Storage
+    const file = bucket.file(frameFileName);
+    await file.save(frameBuffer, {
+      metadata: {
+        contentType: 'image/jpeg',
+      },
+    });
 
-    // Return the URL to access the frame
-    const frameUrl = `/frames/${frameFileName}`;
-    return res.status(200).json({ url: frameUrl });
+    // Set expiration time (e.g., 1 hour from now)
+    const expirationTime = Date.now() + 60 * 60 * 10*1000; // 10 hours
+    await file.setMetadata({
+      metadata: {
+        autoDeleteTime: expirationTime.toString(),
+      },
+    });
+
+    // Generate a signed URL that expires in 1 hour
+    const [signedUrl] = await file.getSignedUrl({
+      action: 'read',
+      expires: expirationTime,
+    });
+
+    return res.status(200).json({ url: signedUrl });
   } catch (error) {
     console.error('Error getting video frame:', error);
     res.status(500).json({ error: 'Internal server error' });

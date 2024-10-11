@@ -103,7 +103,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onVideoUploaded }) => {
         {(uploading || creatingArticle) && (
           <div className="mt-2">
             <p className="text-sm text-gray-500 mt-1">
-              {uploading ? 'Uploading video...' : 'Creating article... This may take a minute.'}
+              {uploading ? 'Uploading video...' : 'Creating article... This may take a few minutes.'}
             </p>
           </div>
         )}
