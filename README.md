@@ -2,6 +2,8 @@
 
 This project is a web application that converts educational videos into multimedia articles using AI. It consists of a Next.js frontend and a Go backend with GraphQL API. I made it for two reasons: firstly, because it crossed off a bunch of things from my try-these-out list, including Go, GraphQL, and Gemini. And secondly, because I missed some lectures at CMU because I was sick, but I don't like watching recorded lectures so I made this to try to convert them into written form.
 
+It is not optimized for performance yet. Converting a 15 minute video into an article takes about 4 minutes.
+
 ## Prerequisites
 
 - Node.js (v14 or later)
