@@ -106,8 +106,7 @@ his mannerisms,but instead write the article as if you are writing an article to
 The article should have a title and a table of contents. The title should be formatted as a markdown header.
 The table of contents should be formatted as a markdown list.
 Each section in the table of contents should have a title and a timestamp. The timestamp of each section is the start time of the corresponding content in the video.
-The table of contents do not necessarily have to be in the same order as the content in the video. The final section should
-be a concise bullet-pointed summary of the entire article.
+The table of contents do not necessarily have to be in the same order as the content in the video. The final section of the article must be a concise bullet-pointed summary of the entire article.
 You should include the timestamp of each section at the start of the section.
 You are encouraged to embed frames from the video as images in the article when they are relevant to nearby content. Whenever
 you want to embed a frame from the video, you should do it by using the following syntax:
