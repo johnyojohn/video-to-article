@@ -99,11 +99,15 @@ Here is the transcription:
 
 %s
 
-Your task is to generate a well-structured article based on the transcription using markdown. 
+Your task is to generate a very comprehensive, well-structured article based on the transcription using markdown. 
+The article should cover every important detail in the video; longer videos should result in a longer article. 
+In general, you are encouraged to have long articles. You should not describe the narrator of the video or incorporate
+his mannerisms,but instead write the article as if you are writing an article to teach the same information.
 The article should have a title and a table of contents. The title should be formatted as a markdown header.
 The table of contents should be formatted as a markdown list.
 Each section in the table of contents should have a title and a timestamp. The timestamp of each section is the start time of the corresponding content in the video.
-The table of contents do not necessarily have to be in the same order as the content in the video.
+The table of contents do not necessarily have to be in the same order as the content in the video. The final section should
+be a concise bullet-pointed summary of the entire article.
 You should include the timestamp of each section at the start of the section.
 You are encouraged to embed frames from the video as images in the article when they are relevant to nearby content. Whenever
 you want to embed a frame from the video, you should do it by using the following syntax:
@@ -165,7 +169,9 @@ func GenerateTranscriptionWithTimestamps(videoURL string) (string, error) {
 	res, err := model.GenerateContent(ctx, part, genai.Text(`
 	    You are given an educational video.
 		For each second of the video, provide the timestamp, transcription, and detailed visual descriptions using 
-		this JSON schema. Note that the timestamp should be in the format of HH:MM:SS.
+		this JSON schema. Note that the timestamp should be in the format of HH:MM:SS. Be very detailed and try
+		to cover every second of the video. Do not include any other text
+		besides the JSON.
         `))
 
 	if err != nil {
