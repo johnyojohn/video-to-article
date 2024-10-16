@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useGetVideoUrl } from '@/lib/hooks/useGetVideoUrl';
 import rehypeRaw from "rehype-raw";
+import remarkMath from 'remark-math';
+import rehypeMathJax from 'rehype-mathjax';
 
 interface ArticleViewerProps {
   articleData: {
@@ -75,7 +77,7 @@ const ArticleViewer: React.FC<ArticleViewerProps> = ({ articleData }) => {
     <div className="max-w-4xl mx-auto pb-10">
       
       <video className="mb-10" src={videoUrl} controls />
-      <ReactMarkdown rehypePlugins={[rehypeRaw]} className="markdown">{processedContent}</ReactMarkdown>
+      <ReactMarkdown rehypePlugins={[rehypeRaw, remarkMath, rehypeMathJax]} className="markdown">{processedContent}</ReactMarkdown>
     </div>
   );
 };

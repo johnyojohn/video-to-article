@@ -115,6 +115,11 @@ You are encouraged to embed frames from the video as images in the article when 
 you want to embed a frame from the video, you should do it by using the following syntax:
 <!---<img timestamp="HH:MM:SS" width="300" height="200" />-->
 Note that this is a comment in markdown and will be accounted for separately. 
+You are also encouraged to use mathematical notation using latex within the markdown. When using latex, you should use the following syntax:
+$$
+<your latex equation here>
+$$
+This will be accounted for in the post-processing.
 Return only the markdown.
 `, transcription)))
 
@@ -150,7 +155,7 @@ func GenerateTranscriptionWithTimestamps(videoURL string) (string, error) {
 			Type: genai.TypeObject,
 			Properties: map[string]*genai.Schema{
 				"timestamp": {
-					Type: genai.TypeString, // HH:MM:SS
+					Type: genai.TypeString, // HH:MM:SS; enforce regex later
 				},
 				"transcription": {
 					Type: genai.TypeString,
@@ -170,7 +175,7 @@ func GenerateTranscriptionWithTimestamps(videoURL string) (string, error) {
 
 	res, err := model.GenerateContent(ctx, part, genai.Text(`
 	    You are given an educational video.
-		For each second of the video, provide the timestamp, transcription, and detailed visual descriptions using 
+		For each second of the video from start to finish, provide the timestamp, transcription, and detailed visual descriptions using 
 		this JSON schema. Note that the timestamp should be in the format of HH:MM:SS. Be very detailed and try
 		to cover every second of the video. Do not include any other text
 		besides the JSON.
